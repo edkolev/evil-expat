@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/edkolev/evil-expat.svg?branch=master)](https://travis-ci.org/edkolev/evil-expat)
+
 # evil-expat.el
 
 Add extra evil ex commands, including:
