@@ -40,6 +40,7 @@
 (require 'evil)
 
 (evil-define-command evil-expat-reverse (beg end)
+  "Reverse the lines between BEG and END."
   :type line
   :repeat nil
   (interactive "<r>")
@@ -50,6 +51,7 @@
 
 ;; :remove to delete file and buffer
 (evil-define-command evil-expat-remove ()
+  "Remove the current file and its buffer."
   (interactive)
   (let ((filename (buffer-file-name)))
     (unless filename
@@ -58,6 +60,26 @@
     (kill-buffer)
     (message "Removed %s and its buffer" filename)))
 (evil-ex-define-cmd "remove" 'evil-expat-remove)
+
+(evil-define-command evil-expat-rename (new-name)
+  "Rename the current file and its buffer to NEW-NAME."
+  ;; TODO create any missing directory structure
+  ;; TODO with bang, overwrite existing files
+  (interactive "<f>")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (unless filename
+      (user-error "Buffer %s is not visiting a file" buffer-name))
+    (when (file-exists-p new-name)
+      (user-error "File %s already exists"))
+    (when (get-buffer new-name)
+      (user-error "A buffer named %s already exists" new-name))
+
+    (rename-file filename new-name 1)
+    (rename-buffer new-name)
+    (set-visited-file-name new-name)
+    (set-buffer-modified-p nil)))
+(evil-ex-define-cmd "rename" 'evil-expat-rename)
 
 (provide 'evil-expat)
 
