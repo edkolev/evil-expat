@@ -4,8 +4,8 @@
 (require 'evil-test-helpers)
 
 (ert-deftest evil-expat-test ()
-  (ert-info ("basic")
+  (ert-info (":rev")
     (evil-test-buffer
-     "[o]ne"
-     ("x")
-     "ne")))
+     "<one\nt>wo\nthree"
+     (":rev")
+     "two\none\nthree")))

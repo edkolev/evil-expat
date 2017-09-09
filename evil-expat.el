@@ -39,6 +39,15 @@
 
 (require 'evil)
 
+(evil-define-command evil-expat-reverse (beg end)
+  :type line
+  :repeat nil
+  (interactive "<r>")
+  (when (eq (line-number-at-pos beg) (line-number-at-pos (1- end)))
+    (user-error "More than one lines must be selected"))
+  (reverse-region beg end))
+(evil-ex-define-cmd "rev[erse]" 'evil-expat-reverse)
+
 (provide 'evil-expat)
 
 ;;; evil-expat.el ends here
