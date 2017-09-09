@@ -81,6 +81,12 @@
     (set-buffer-modified-p nil)))
 (evil-ex-define-cmd "rename" 'evil-expat-rename)
 
+(evil-define-command evil-expat-gblame ()
+  (unless (require 'magit nil 'noerror)
+    (user-error "Package magit isn't installed"))
+  (call-interactively 'magit-blame))
+(evil-ex-define-cmd "gblame" 'evil-expat-gblame)
+
 (provide 'evil-expat)
 
 ;;; evil-expat.el ends here
