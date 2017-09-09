@@ -69,7 +69,7 @@
   (let ((name (buffer-name))
         (filename (buffer-file-name)))
     (unless filename
-      (user-error "Buffer %s is not visiting a file" buffer-name))
+      (user-error "Buffer %s is not visiting a file" name))
     (when (file-exists-p new-name)
       (user-error "File %s already exists"))
     (when (get-buffer new-name)
