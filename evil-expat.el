@@ -48,6 +48,17 @@
   (reverse-region beg end))
 (evil-ex-define-cmd "rev[erse]" 'evil-expat-reverse)
 
+;; :remove to delete file and buffer
+(evil-define-command evil-expat-remove ()
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (unless filename
+      (user-error "Buffer %s is not visiting a file" (buffer-name)))
+    (delete-file filename)
+    (kill-buffer)
+    (message "Removed %s and its buffer" filename)))
+(evil-ex-define-cmd "remove" 'evil-expat-remove)
+
 (provide 'evil-expat)
 
 ;;; evil-expat.el ends here
