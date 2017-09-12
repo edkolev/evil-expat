@@ -70,8 +70,10 @@
         (filename (buffer-file-name)))
     (unless filename
       (user-error "Buffer %s is not visiting a file" name))
+    (when (string-equal (expand-file-name filename) (expand-file-name new-name))
+      (user-error "%s and %s are the same file" buffer-file-name new-name))
     (when (file-exists-p new-name)
-      (user-error "File %s already exists"))
+      (user-error "File %s already exists" new-name))
     (when (get-buffer new-name)
       (user-error "A buffer named %s already exists" new-name))
 
