@@ -89,6 +89,31 @@
   (call-interactively 'magit-blame))
 (evil-ex-define-cmd "gblame" 'evil-expat-gblame)
 
+(evil-define-command evil-expat-gremove (bang)
+  "Remove current file and its buffer.
+
+BANG forces removal of files with modifications"
+  (interactive "<!>")
+  (unless (require 'magit nil 'noerror)
+    (user-error "Package magit isn't installed"))
+  (let ((filename (buffer-file-name)))
+    (unless filename
+      (user-error "Buffer %s is not visiting a file" (buffer-name)))
+    (unless (magit-file-tracked-p filename)
+      (user-error "File %s is not tracked by git" filename))
+
+    ;; call magit to remove the file
+    (let ((magit-process-raise-error t))
+      (condition-case err
+          (magit-file-delete filename bang)
+        (magit-git-error
+         (if (string-match-p "the following file has local modifications" (error-message-string err))
+             (user-error "File %s has modifications, use :gremove! to force" (buffer-file-name))
+           (user-error (error-message-string err))))))
+    (when (not (file-exists-p filename))
+      (kill-buffer))))
+(evil-ex-define-cmd "gremove" 'evil-expat-gremove)
+
 (provide 'evil-expat)
 
 ;;; evil-expat.el ends here

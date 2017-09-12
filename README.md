@@ -8,6 +8,7 @@ Add extra evil ex commands, including:
 - `:remove` remove current file and its buffer
 - `:rename` rename current file and its buffer
 - `:gblame` git-blame current file, requires `magit`
+- `:gremove` git remove current file, requires `magit`
 
 ## Installation
 
