@@ -1,4 +1,4 @@
-;;; evil-expat.el --- Evil ex commands -*- lexical-binding: t; coding: utf-8 -*-
+;;; evil-expat.el --- Evil ex commands -*- coding: utf-8 -*-
 
 ;; Copyright (C) 2017 edkolev
 
@@ -82,6 +82,9 @@
     (set-visited-file-name new-name)
     (set-buffer-modified-p nil)))
 (evil-ex-define-cmd "rename" 'evil-expat-rename)
+
+(declare-function magit-file-tracked-p "ext:magit")
+(declare-function magit-file-delete "ext:magit")
 
 (evil-define-command evil-expat-gblame ()
   (unless (require 'magit nil 'noerror)
