@@ -111,11 +111,28 @@ BANG forces removal of files with modifications"
           (magit-file-delete filename bang)
         (magit-git-error
          (if (string-match-p "the following file has local modifications" (error-message-string err))
-             (user-error "File %s has modifications, use :gremove! to force" (buffer-file-name))
+             (user-error "File %s has modifications, use :gremove! to force" (buffer-name))
            (user-error (error-message-string err))))))
     (when (not (file-exists-p filename))
       (kill-buffer))))
 (evil-ex-define-cmd "gremove" 'evil-expat-gremove)
+
+;; define :tyank and :tput only when running under tmux
+(when (and (getenv "TMUX") (executable-find "tmux"))
+  (evil-define-command evil-expat-tyank (begin end _type)
+    "Save range in tmux paste buffer"
+    (interactive "<R>")
+    (shell-command (concat "tmux set-buffer " (shell-quote-argument (buffer-substring begin end)))))
+  (evil-ex-define-cmd "tyank" 'evil-expat-tyank)
+
+  (evil-define-command evil-expat-tput ()
+    "Paster from tmux paste buffer."
+    (interactive)
+    (save-excursion
+      (end-of-line)
+      (newline)
+      (insert (shell-command-to-string "tmux show-buffer"))))
+  (evil-ex-define-cmd "tput" 'evil-expat-tput))
 
 (provide 'evil-expat)
 

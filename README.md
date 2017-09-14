@@ -9,6 +9,8 @@ Add extra evil ex commands, including:
 - `:rename` rename current file and its buffer
 - `:gblame` git-blame current file, requires `magit`
 - `:gremove` git remove current file, requires `magit`
+- `:tyank` copy range into tmux paste buffer, requires running under `tmux`
+- `:tput` paste from tmux paste buffer, requires running under `tmux`
 
 ## Installation
 
