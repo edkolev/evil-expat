@@ -61,25 +61,28 @@
     (message "Removed %s and its buffer" filename)))
 (evil-ex-define-cmd "remove" 'evil-expat-remove)
 
-(evil-define-command evil-expat-rename (new-name)
+(evil-define-command evil-expat-rename (bang new-name)
   "Rename the current file and its buffer to NEW-NAME."
   ;; TODO create any missing directory structure
-  ;; TODO with bang, overwrite existing files
-  (interactive "<f>")
+  (interactive "<!><f>")
   (let ((name (buffer-name))
         (filename (buffer-file-name)))
     (unless filename
       (user-error "Buffer %s is not visiting a file" name))
     (when (string-equal (expand-file-name filename) (expand-file-name new-name))
       (user-error "%s and %s are the same file" buffer-file-name new-name))
-    (when (file-exists-p new-name)
+    (when (and (file-exists-p new-name) (not bang))
       (user-error "File %s already exists" new-name))
-    (when (get-buffer new-name)
+    (when (and (get-buffer new-name) (not bang))
       (user-error "A buffer named %s already exists" new-name))
 
-    (rename-file filename new-name 1)
-    (rename-buffer new-name)
-    (set-visited-file-name new-name)
+    (condition-case err
+        (rename-file filename new-name bang)
+      (error
+       (if (string-match-p "File already exists" (error-message-string err))
+           (user-error "File %s exists, use :grename! to overwrite it" new-name)
+         (user-error (error-message-string err)))))
+    (set-visited-file-name new-name t)
     (set-buffer-modified-p nil)))
 (evil-ex-define-cmd "rename" 'evil-expat-rename)
 
