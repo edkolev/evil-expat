@@ -72,14 +72,14 @@
     (when (string-equal (expand-file-name filename) (expand-file-name new-name))
       (user-error "%s and %s are the same file" buffer-file-name new-name))
     (when (and (file-exists-p new-name) (not bang))
-      (user-error "File %s already exists" new-name))
+      (user-error "File %s exists, use :grename! to overwrite it" new-name))
     (when (and (get-buffer new-name) (not bang))
       (user-error "A buffer named %s already exists" new-name))
 
     (condition-case err
         (rename-file filename new-name bang)
       (error
-       (if (string-match-p "File already exists" (error-message-string err))
+       (if (and (string-match-p "File already exists" (error-message-string err)) (not bang))
            (user-error "File %s exists, use :grename! to overwrite it" new-name)
          (user-error (error-message-string err)))))
     (set-visited-file-name new-name t)
