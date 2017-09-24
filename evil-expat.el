@@ -137,6 +137,12 @@ BANG forces removal of files with modifications"
       (insert (shell-command-to-string "tmux show-buffer"))))
   (evil-ex-define-cmd "tput" 'evil-expat-tput))
 
+(defun expat-diff-orig ()
+  (interactive)
+  ;; call diff-buffer-with-file uninteractively to avoid getting a file prompt
+  (diff-buffer-with-file))
+(evil-ex-define-cmd "diff-orig" 'expat-diff-orig)
+
 (evil-define-interactive-code "<expat-theme>"
   "A color theme ex argument."
   :ex-arg expat-theme
