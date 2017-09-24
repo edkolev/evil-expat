@@ -7,6 +7,7 @@ Add extra evil ex commands, including:
 - `:reverse` reverse visually selected lines
 - `:remove` remove current file and its buffer
 - `:rename` rename current file and its buffer
+- `:colorscheme` change emacs color theme
 - `:gblame` git-blame current file, requires `magit`
 - `:gremove` git remove current file, requires `magit`
 - `:tyank` copy range into tmux paste buffer, requires running under `tmux`

@@ -137,6 +137,42 @@ BANG forces removal of files with modifications"
       (insert (shell-command-to-string "tmux show-buffer"))))
   (evil-ex-define-cmd "tput" 'evil-expat-tput))
 
+(evil-define-interactive-code "<expat-theme>"
+  "A color theme ex argument."
+  :ex-arg expat-theme
+  (list (when (and (evil-ex-p) evil-ex-argument)
+          (intern evil-ex-argument))))
+
+(evil-ex-define-argument-type expat-theme
+  "Defines an argument type which can take a color theme name."
+  :collection
+  (lambda (arg predicate flag)
+    (let ((completions
+           (append '("default") ;; append "default" theme
+                   (mapcar 'symbol-name (custom-available-themes)))))
+      (when arg
+        (cond
+         ((eq flag nil)
+          (try-completion arg completions predicate))
+         ((eq flag t)
+          (all-completions arg completions predicate))
+         ((eq flag 'lambda)
+          (test-completion arg completions predicate))
+         ((eq (car-safe flag) 'boundaries)
+          (cons 'boundaries
+                (completion-boundaries arg
+                                       completions
+                                       predicate
+                                       (cdr flag)))))))))
+
+(evil-define-command expat-colorscheme (theme)
+  (interactive "<expat-theme>")
+  (mapc #'disable-theme custom-enabled-themes)
+  (unless (string-equal "default" theme)
+    (load-theme theme t)))
+
+(evil-ex-define-cmd "colo[rscheme]" 'expat-colorscheme)
+
 (provide 'evil-expat)
 
 ;;; evil-expat.el ends here
