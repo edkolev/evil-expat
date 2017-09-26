@@ -50,7 +50,7 @@
 (evil-ex-define-cmd "rev[erse]" 'evil-expat-reverse)
 
 ;; :remove to delete file and buffer
-(evil-define-command evil-expat-remove ()
+(defun evil-expat-remove ()
   "Remove the current file and its buffer."
   (interactive)
   (let ((filename (buffer-file-name)))
@@ -89,7 +89,9 @@
 (declare-function magit-file-tracked-p "ext:magit")
 (declare-function magit-file-delete "ext:magit")
 
-(evil-define-command evil-expat-gblame ()
+(defun evil-expat-gblame ()
+  "The ex :gblame command."
+  (interactive)
   (unless (require 'magit nil 'noerror)
     (user-error "Package magit isn't installed"))
   (call-interactively 'magit-blame))
@@ -128,7 +130,7 @@ BANG forces removal of files with modifications"
     (shell-command (concat "tmux set-buffer " (shell-quote-argument (buffer-substring begin end)))))
   (evil-ex-define-cmd "tyank" 'evil-expat-tyank)
 
-  (evil-define-command evil-expat-tput ()
+  (defun evil-expat-tput ()
     "Paster from tmux paste buffer."
     (interactive)
     (save-excursion
@@ -138,8 +140,8 @@ BANG forces removal of files with modifications"
   (evil-ex-define-cmd "tput" 'evil-expat-tput))
 
 (defun expat-diff-orig ()
+  "Call function `diff-buffer-with-file' non-interactively."
   (interactive)
-  ;; call diff-buffer-with-file uninteractively to avoid getting a file prompt
   (diff-buffer-with-file))
 (evil-ex-define-cmd "diff-orig" 'expat-diff-orig)
 
@@ -172,6 +174,7 @@ BANG forces removal of files with modifications"
                                        (cdr flag)))))))))
 
 (evil-define-command expat-colorscheme (theme)
+  "The ex :colorscheme command"
   (interactive "<expat-theme>")
   (mapc #'disable-theme custom-enabled-themes)
   (unless (string-equal "default" theme)
