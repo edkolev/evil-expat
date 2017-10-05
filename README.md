@@ -6,7 +6,7 @@ Add extra evil ex commands, including:
 
 - `:reverse` reverse visually selected lines
 - `:remove` remove current file and its buffer
-- `:rename` rename current file and its buffer
+- `:rename` rename or move current file and its buffer
 - `:colorscheme` change emacs color theme
 - `:diff-orig` get a diff of unsaved changes, like vim's common `:DiffOrig`
 - `:gblame` git-blame current file, requires `magit`

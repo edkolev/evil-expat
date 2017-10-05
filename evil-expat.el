@@ -62,11 +62,16 @@
 (evil-ex-define-cmd "remove" 'evil-expat-remove)
 
 (evil-define-command evil-expat-rename (bang new-name)
-  "Rename the current file and its buffer to NEW-NAME."
+  "Rename the current file and its buffer to NEW-NAME.
+
+If NEW-NAME is a directory, the file is moved there."
   ;; TODO create any missing directory structure
   (interactive "<!><f>")
-  (let ((name (buffer-name))
-        (filename (buffer-file-name)))
+  (let* ((name (buffer-name))
+         (filename (buffer-file-name))
+         (new-name (if (file-directory-p new-name)
+                       (concat (file-name-as-directory new-name) (file-name-nondirectory filename))
+                     new-name)))
     (unless filename
       (user-error "Buffer %s is not visiting a file" name))
     (when (string-equal (expand-file-name filename) (expand-file-name new-name))
