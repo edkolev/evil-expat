@@ -78,8 +78,6 @@ If NEW-NAME is a directory, the file is moved there."
       (user-error "%s and %s are the same file" buffer-file-name new-name))
     (when (and (file-exists-p new-name) (not bang))
       (user-error "File %s exists, use :rename to overwrite it" new-name))
-    (when (and (get-buffer new-name) (not bang))
-      (user-error "A buffer named %s already exists" new-name))
 
     (condition-case err
         (rename-file filename new-name bang)
