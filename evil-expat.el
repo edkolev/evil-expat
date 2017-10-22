@@ -216,7 +216,7 @@ BANG forces removal of files with modifications"
                                        predicate
                                        (cdr flag)))))))))
 
-(evil-define-command expat-colorscheme (theme)
+(evil-define-command evil-expat-colorscheme (theme)
   "The ex :colorscheme command"
   (interactive "<expat-theme>")
   (mapc #'disable-theme custom-enabled-themes)
@@ -226,8 +226,8 @@ BANG forces removal of files with modifications"
 ;;;###autoload
 (eval-after-load 'evil
   '(progn
-    (evil-ex-define-cmd "colo[rscheme]" 'expat-colorscheme)
-    (autoload 'expat-colorscheme "evil-expat" nil t)))
+    (evil-ex-define-cmd "colo[rscheme]" 'evil-expat-colorscheme)
+    (autoload 'evil-expat-colorscheme "evil-expat" nil t)))
 
 (provide 'evil-expat)
 
