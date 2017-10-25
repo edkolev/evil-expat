@@ -51,8 +51,8 @@
 ;;;###autoload
 (eval-after-load 'evil
   '(progn
-  (evil-ex-define-cmd "rev[erse]" 'evil-expat-reverse)
-  (autoload 'evil-expat-reverse "evil-expat" nil t)))
+     (evil-ex-define-cmd "rev[erse]" 'evil-expat-reverse)
+     (autoload 'evil-expat-reverse "evil-expat" nil t)))
 
 ;; :remove to delete file and buffer
 (defun evil-expat-remove ()
@@ -226,8 +226,8 @@ BANG forces removal of files with modifications"
 ;;;###autoload
 (eval-after-load 'evil
   '(progn
-    (evil-ex-define-cmd "colo[rscheme]" 'evil-expat-colorscheme)
-    (autoload 'evil-expat-colorscheme "evil-expat" nil t)))
+     (evil-ex-define-cmd "colo[rscheme]" 'evil-expat-colorscheme)
+     (autoload 'evil-expat-colorscheme "evil-expat" nil t)))
 
 (provide 'evil-expat)
 
