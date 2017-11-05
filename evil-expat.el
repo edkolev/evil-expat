@@ -191,7 +191,7 @@ BANG forces removal of files with modifications"
      (evil-ex-define-cmd "tput" 'evil-expat-tput)
      (autoload 'evil-expat-tput "evil-expat" nil t)))
 
-(defun expat-diff-orig ()
+(defun evil-expat-diff-orig ()
   "Call function `diff-buffer-with-file' non-interactively."
   (interactive)
   (diff-buffer-with-file))
@@ -199,8 +199,8 @@ BANG forces removal of files with modifications"
 ;;;###autoload
 (eval-after-load 'evil
   '(progn
-     (evil-ex-define-cmd "diff-orig" 'expat-diff-orig)
-     (autoload 'expat-diff-orig "evil-expat" nil t)))
+     (evil-ex-define-cmd "diff-orig" 'evil-expat-diff-orig)
+     (autoload 'evil-expat-diff-orig "evil-expat" nil t)))
 
 (evil-define-interactive-code "<expat-theme>"
   "A color theme ex argument."
