@@ -150,7 +150,7 @@ BANG forces removal of files with modifications"
     ;; call magit to remove the file
     (let ((magit-process-raise-error t))
       (condition-case err
-          (magit-file-delete filename bang)
+          (magit-call-git "rm" (when bang "--force") "--" filename)
         (magit-git-error
          (if (string-match-p "the following file has local modifications" (error-message-string err))
              (user-error "File %s has modifications, use :gremove! to force" (buffer-name))
