@@ -134,6 +134,8 @@ If NEW-NAME is a directory, the file is moved there."
      (evil-ex-define-cmd "gblame" 'evil-expat-gblame)
      (autoload 'evil-expat-gblame "evil-expat" nil t)))
 
+(declare-function magit-call-git "ext:magit")
+
 (evil-define-command evil-expat-gremove (bang)
   "Remove current file and its buffer.
 
