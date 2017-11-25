@@ -44,7 +44,7 @@
 ;; :reverse      reverse visually selected lines
 ;; :colorscheme  change Emacs color theme; like vim's ex command of the same name
 ;; :diff-orig    get a diff of unsaved changes; like vim's common `:DiffOrig` from the official example vimrc
-;; :gdiff        git-diff current file, requires `magit` and `vdiff`; like vim-fugitive's :Gblame
+;; :gdiff        git-diff current file, requires `magit` and `vdiff-magit`; like vim-fugitive's :Gblame
 ;; :gblame       git-blame current file, requires `magit`; like vim-fugitive's :Gblame
 ;; :gremove      git remove current file, requires `magit`; like vim-fugitive's :Gremove
 ;; :tyank        copy range into tmux paste buffer, requires running under `tmux`; like vim-tbone's :Tyank
@@ -107,6 +107,9 @@ git."
 
 ;;; :reverse
 
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "rev[erse]" 'evil-expat-reverse) (autoload 'evil-expat-reverse "evil-expat" nil t)))
+
 (evil-define-command evil-expat-reverse (beg end)
   "Reverse the lines between BEG and END."
   :type line
@@ -116,10 +119,10 @@ git."
     (user-error "More than one lines must be selected"))
   (reverse-region beg end))
 
-;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "rev[erse]" 'evil-expat-reverse) (autoload 'evil-expat-reverse "evil-expat" nil t)))
-
 ;;; :remove
+
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "remove" 'evil-expat-remove) (autoload 'evil-expat-remove "evil-expat" nil t)))
 
 ;; :remove to delete file and buffer
 (defun evil-expat-remove ()
@@ -132,10 +135,10 @@ git."
     (kill-buffer)
     (message "Removed %s and its buffer" filename)))
 
-;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "remove" 'evil-expat-remove) (autoload 'evil-expat-remove "evil-expat" nil t)))
-
 ;;; :rename
+
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "rename" 'evil-expat-rename) (autoload 'evil-expat-rename "evil-expat" nil t)))
 
 (evil-define-command evil-expat-rename (bang new-name)
   "Rename the current file and its buffer to NEW-NAME.
@@ -164,10 +167,10 @@ If NEW-NAME is a directory, the file is moved there."
     (set-visited-file-name new-name t)
     (set-buffer-modified-p nil)))
 
-;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "rename" 'evil-expat-rename) (autoload 'evil-expat-rename "evil-expat" nil t)))
-
 ;;; :gblame
+
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "gblame" 'evil-expat-gblame) (autoload 'evil-expat-gblame "evil-expat" nil t)))
 
 (defun evil-expat-gblame ()
   "The ex :gblame command."
@@ -176,10 +179,10 @@ If NEW-NAME is a directory, the file is moved there."
     (user-error "Package magit isn't installed"))
   (call-interactively 'magit-blame))
 
-;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "gblame" 'evil-expat-gblame) (autoload 'evil-expat-gblame "evil-expat" nil t)))
-
 ;;; :gremove
+
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "gremove" 'evil-expat-gremove) (autoload 'evil-expat-gremove "evil-expat" nil t)))
 
 (declare-function magit-call-git "ext:magit")
 
@@ -207,10 +210,12 @@ BANG forces removal of files with modifications"
     (when (not (file-exists-p filename))
       (kill-buffer))))
 
-;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "gremove" 'evil-expat-gremove) (autoload 'evil-expat-gremove "evil-expat" nil t)))
-
 ;;; :tyank and :tput
+
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "tyank" 'evil-expat-tyank) (autoload 'evil-expat-tyank "evil-expat" nil t)))
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "tput" 'evil-expat-tput) (autoload 'evil-expat-tput "evil-expat" nil t)))
 
 ;; define :tyank and :tput only when running under tmux
 (when (and (getenv "TMUX") (executable-find "tmux"))
@@ -227,29 +232,24 @@ BANG forces removal of files with modifications"
       (newline)
       (insert (shell-command-to-string "tmux show-buffer")))))
 
-;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "tyank" 'evil-expat-tyank) (autoload 'evil-expat-tyank "evil-expat" nil t)))
-
-;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "tput" 'evil-expat-tput) (autoload 'evil-expat-tput "evil-expat" nil t)))
-
 ;;; diff-orig
+
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "diff-orig" 'evil-expat-diff-orig) (autoload 'evil-expat-diff-orig "evil-expat" nil t)))
 
 (defun evil-expat-diff-orig ()
   "Call function `diff-buffer-with-file' non-interactively."
   (interactive)
   (diff-buffer-with-file))
 
-;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "diff-orig" 'evil-expat-diff-orig) (autoload 'evil-expat-diff-orig "evil-expat" nil t)))
-
 ;;; :colorscheme
 
-;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "colo[rscheme]" 'evil-expat-colorscheme) (autoload 'evil-expat-colorscheme "evil-expat" nil t)))
 (evil-expat--define-ex-argument "<expat-theme>" expat-theme
   (append '("default")
           (mapcar 'symbol-name (custom-available-themes))))
+
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "colo[rscheme]" 'evil-expat-colorscheme) (autoload 'evil-expat-colorscheme "evil-expat" nil t)))
 
 (evil-define-command evil-expat-colorscheme (theme)
   "The ex :colorscheme command"
@@ -257,7 +257,6 @@ BANG forces removal of files with modifications"
   (mapc #'disable-theme custom-enabled-themes)
   (unless (string-equal "default" theme)
     (load-theme theme t)))
-
 
 ;;; :gdiff
 
