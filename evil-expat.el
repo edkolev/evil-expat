@@ -42,8 +42,9 @@
 ;; :remove       remove current file and its buffer; like vim-eunuch's :Remove
 ;; :rename       rename or move current file and its buffer; lime vim-eunuch's :Rename
 ;; :reverse      reverse visually selected lines
-;; :colorscheme  change emacs color theme; like vim's ex command of the same name
+;; :colorscheme  change Emacs color theme; like vim's ex command of the same name
 ;; :diff-orig    get a diff of unsaved changes; like vim's common `:DiffOrig` from the official example vimrc
+;; :gdiff        git-diff current file, requires `magit` and `vdiff`; like vim-fugitive's :Gblame
 ;; :gblame       git-blame current file, requires `magit`; like vim-fugitive's :Gblame
 ;; :gremove      git remove current file, requires `magit`; like vim-fugitive's :Gremove
 ;; :tyank        copy range into tmux paste buffer, requires running under `tmux`; like vim-tbone's :Tyank
@@ -89,6 +90,20 @@ Ideally, NAME-STR should be depraced and derived from NAME."
                                             completions
                                             predicate
                                             (cdr flag)))))))))))
+
+(declare-function magit-file-tracked-p "ext:magit")
+
+(defun evil-expat--filename-or-user-error (&optional check-magit-trackedp)
+  "Return the current buffer file name or a call `user-error'.
+
+If CHECK-MAGIT-TRACKEDP is non-nil, check if the file is tracked in
+git."
+  (let ((filename (buffer-file-name)))
+    (unless filename
+      (user-error "Buffer %s is not visiting a file" (buffer-name)))
+    (unless (magit-file-tracked-p filename)
+      (user-error "File %s is not tracked by git" filename))
+    filename))
 
 ;;; :reverse
 
@@ -151,8 +166,6 @@ If NEW-NAME is a directory, the file is moved there."
 
 ;;;###autoload
 (eval-after-load 'evil '(progn (evil-ex-define-cmd "rename" 'evil-expat-rename) (autoload 'evil-expat-rename "evil-expat" nil t)))
-
-(declare-function magit-file-tracked-p "ext:magit")
 
 ;;; :gblame
 
@@ -245,8 +258,30 @@ BANG forces removal of files with modifications"
   (unless (string-equal "default" theme)
     (load-theme theme t)))
 
+
+;;; :gdiff
+
+(evil-expat--define-ex-argument "<expat-git-branch>" expat-git-branch
+  (progn
+    (unless (require 'magit nil 'noerror)
+      (user-error "Package magit isn't installed"))
+    (magit-list-local-branch-names)))
+
 ;;;###autoload
-(eval-after-load 'evil '(progn (evil-ex-define-cmd "colo[rscheme]" 'evil-expat-colorscheme) (autoload 'evil-expat-colorscheme "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "gdiff" 'evil-expat-gdiff) (autoload 'evil-expat-gdiff "evil-expat" nil t)))
+
+(declare-function vdiff-magit-compare "ext:vdiff")
+
+(evil-define-command evil-expat-gdiff (revision)
+  "Diff the current file with the current file in REVISION."
+  (interactive "<expat-git-branch>")
+
+  (unless (require 'vdiff nil 'noerror)
+    (user-error "Package vdiff isn't installed"))
+
+  (let ((filename (evil-expat--filename-or-user-error t)))
+    ;; TODO revision should be given as a string by the interactive ex arg <expat-git-branch>
+    (vdiff-magit-compare "HEAD" (symbol-name revision) filename filename)))
 
 (provide 'evil-expat)
 

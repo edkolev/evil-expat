@@ -6,9 +6,10 @@ Add extra evil ex commands, including:
 
 - `:reverse` reverse visually selected lines
 - `:remove` remove current file and its buffer
-- `:rename` rename or move current file and its buffer
-- `:colorscheme` change emacs color theme
+- `:rename NEW-PATH` rename or move current file and its buffer
+- `:colorscheme THEME` change emacs color theme
 - `:diff-orig` get a diff of unsaved changes, like vim's common `:DiffOrig`
+- `:gdiff BRANCH` git-diff current file, requires `magit` and `vdiff`
 - `:gblame` git-blame current file, requires `magit`
 - `:gremove` git remove current file, requires `magit`
 - `:tyank` copy range into tmux paste buffer, requires running under `tmux`
