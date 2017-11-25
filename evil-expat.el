@@ -53,6 +53,8 @@
 
 (require 'evil)
 
+;;; :reverse
+
 (evil-define-command evil-expat-reverse (beg end)
   "Reverse the lines between BEG and END."
   :type line
@@ -63,10 +65,9 @@
   (reverse-region beg end))
 
 ;;;###autoload
-(eval-after-load 'evil
-  '(progn
-     (evil-ex-define-cmd "rev[erse]" 'evil-expat-reverse)
-     (autoload 'evil-expat-reverse "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "rev[erse]" 'evil-expat-reverse) (autoload 'evil-expat-reverse "evil-expat" nil t)))
+
+;;; :remove
 
 ;; :remove to delete file and buffer
 (defun evil-expat-remove ()
@@ -80,10 +81,9 @@
     (message "Removed %s and its buffer" filename)))
 
 ;;;###autoload
-(eval-after-load 'evil
-  '(progn
-     (evil-ex-define-cmd "remove" 'evil-expat-remove)
-     (autoload 'evil-expat-remove "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "remove" 'evil-expat-remove) (autoload 'evil-expat-remove "evil-expat" nil t)))
+
+;;; :rename
 
 (evil-define-command evil-expat-rename (bang new-name)
   "Rename the current file and its buffer to NEW-NAME.
@@ -113,13 +113,11 @@ If NEW-NAME is a directory, the file is moved there."
     (set-buffer-modified-p nil)))
 
 ;;;###autoload
-(eval-after-load 'evil
-  '(progn
-     (evil-ex-define-cmd "rename" 'evil-expat-rename)
-     (autoload 'evil-expat-rename "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "rename" 'evil-expat-rename) (autoload 'evil-expat-rename "evil-expat" nil t)))
 
 (declare-function magit-file-tracked-p "ext:magit")
-(declare-function magit-file-delete "ext:magit")
+
+;;; :gblame
 
 (defun evil-expat-gblame ()
   "The ex :gblame command."
@@ -129,10 +127,9 @@ If NEW-NAME is a directory, the file is moved there."
   (call-interactively 'magit-blame))
 
 ;;;###autoload
-(eval-after-load 'evil
-  '(progn
-     (evil-ex-define-cmd "gblame" 'evil-expat-gblame)
-     (autoload 'evil-expat-gblame "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "gblame" 'evil-expat-gblame) (autoload 'evil-expat-gblame "evil-expat" nil t)))
+
+;;; :gremove
 
 (declare-function magit-call-git "ext:magit")
 
@@ -161,10 +158,9 @@ BANG forces removal of files with modifications"
       (kill-buffer))))
 
 ;;;###autoload
-(eval-after-load 'evil
-  '(progn
-     (evil-ex-define-cmd "gremove" 'evil-expat-gremove)
-     (autoload 'evil-expat-gremove "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "gremove" 'evil-expat-gremove) (autoload 'evil-expat-gremove "evil-expat" nil t)))
+
+;;; :tyank and :tput
 
 ;; define :tyank and :tput only when running under tmux
 (when (and (getenv "TMUX") (executable-find "tmux"))
@@ -182,16 +178,12 @@ BANG forces removal of files with modifications"
       (insert (shell-command-to-string "tmux show-buffer")))))
 
 ;;;###autoload
-(eval-after-load 'evil
-  '(progn
-     (evil-ex-define-cmd "tyank" 'evil-expat-tyank)
-     (autoload 'evil-expat-tyank "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "tyank" 'evil-expat-tyank) (autoload 'evil-expat-tyank "evil-expat" nil t)))
 
 ;;;###autoload
-(eval-after-load 'evil
-  '(progn
-     (evil-ex-define-cmd "tput" 'evil-expat-tput)
-     (autoload 'evil-expat-tput "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "tput" 'evil-expat-tput) (autoload 'evil-expat-tput "evil-expat" nil t)))
+
+;;; diff-orig
 
 (defun evil-expat-diff-orig ()
   "Call function `diff-buffer-with-file' non-interactively."
@@ -199,10 +191,9 @@ BANG forces removal of files with modifications"
   (diff-buffer-with-file))
 
 ;;;###autoload
-(eval-after-load 'evil
-  '(progn
-     (evil-ex-define-cmd "diff-orig" 'evil-expat-diff-orig)
-     (autoload 'evil-expat-diff-orig "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "diff-orig" 'evil-expat-diff-orig) (autoload 'evil-expat-diff-orig "evil-expat" nil t)))
+
+;;; :colorscheme
 
 (evil-define-interactive-code "<expat-theme>"
   "A color theme ex argument."
@@ -240,10 +231,7 @@ BANG forces removal of files with modifications"
     (load-theme theme t)))
 
 ;;;###autoload
-(eval-after-load 'evil
-  '(progn
-     (evil-ex-define-cmd "colo[rscheme]" 'evil-expat-colorscheme)
-     (autoload 'evil-expat-colorscheme "evil-expat" nil t)))
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "colo[rscheme]" 'evil-expat-colorscheme) (autoload 'evil-expat-colorscheme "evil-expat" nil t)))
 
 (provide 'evil-expat)
 
