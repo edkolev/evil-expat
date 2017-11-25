@@ -9,7 +9,7 @@ Add extra evil ex commands, including:
 - `:rename NEW-PATH` rename or move current file and its buffer
 - `:colorscheme THEME` change emacs color theme
 - `:diff-orig` get a diff of unsaved changes, like vim's common `:DiffOrig`
-- `:gdiff BRANCH` git-diff current file, requires `magit` and `vdiff`
+- `:gdiff BRANCH` git-diff current file, requires `magit` and `vdiff-magit`
 - `:gblame` git-blame current file, requires `magit`
 - `:gremove` git remove current file, requires `magit`
 - `:tyank` copy range into tmux paste buffer, requires running under `tmux`

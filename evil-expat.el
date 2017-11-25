@@ -269,18 +269,24 @@ BANG forces removal of files with modifications"
 ;;;###autoload
 (eval-after-load 'evil '(progn (evil-ex-define-cmd "gdiff" 'evil-expat-gdiff) (autoload 'evil-expat-gdiff "evil-expat" nil t)))
 
-(declare-function vdiff-magit-compare "ext:vdiff")
+(declare-function vdiff-magit-compare "ext:vdiff-magit")
+(declare-function vdiff-magit-show-unstaged "ext:vdiff-magit")
 
-(evil-define-command evil-expat-gdiff (revision)
-  "Diff the current file with the current file in REVISION."
+(evil-define-command evil-expat-gdiff (&optional revision)
+  "Diff the current file with the current file in REVISION.
+
+If REVISION is null, show unstaged changes."
   (interactive "<expat-git-branch>")
 
-  (unless (require 'vdiff nil 'noerror)
-    (user-error "Package vdiff isn't installed"))
+  (unless (require 'vdiff-magit nil 'noerror)
+    (user-error "Package vdiff-magit isn't installed"))
 
   (let ((filename (evil-expat--filename-or-user-error t)))
     ;; TODO revision should be given as a string by the interactive ex arg <expat-git-branch>
-    (vdiff-magit-compare "HEAD" (symbol-name revision) filename filename)))
+    (if revision
+        (vdiff-magit-compare "HEAD" (symbol-name revision) filename filename)
+      (vdiff-magit-show-unstaged filename))
+    ))
 
 (provide 'evil-expat)
 
