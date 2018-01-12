@@ -17,8 +17,6 @@ Add extra evil ex commands, including:
 
 ## Installation
 
-NOTE: this section is invalid, the package isn't on Melpa yet.
-
 #### with [use-package](https://github.com/jwiegley/use-package)
 ``` emacs-lisp
 (use-package evil-expat
