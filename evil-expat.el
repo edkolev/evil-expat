@@ -284,7 +284,7 @@ If REVISION is null, show unstaged changes."
   (let ((filename (evil-expat--filename-or-user-error t)))
     ;; TODO revision should be given as a string by the interactive ex arg <expat-git-branch>
     (if revision
-        (vdiff-magit-compare "HEAD" nil filename filename)
+        (vdiff-magit-compare (symbol-name revision) nil filename filename)
       (vdiff-magit-show-unstaged filename))
     ))
 
