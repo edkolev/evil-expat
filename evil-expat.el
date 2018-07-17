@@ -254,6 +254,8 @@ BANG forces removal of files with modifications"
 (evil-define-command evil-expat-colorscheme (theme)
   "The ex :colorscheme command"
   (interactive "<expat-theme>")
+  (unless (or (string-equal theme "default") (memq theme (custom-available-themes)))
+    (user-error "Cannot find theme `%s'" theme))
   (mapc #'disable-theme custom-enabled-themes)
   (unless (string-equal "default" theme)
     (load-theme theme t)))
