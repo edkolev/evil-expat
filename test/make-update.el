@@ -1,5 +1,6 @@
 ;; list of the all the dependencies, including the dev dependencies
-(defvar dev-packages '(evil evil-test-helpers))
+(defvar dev-packages
+  '(evil evil-test-helpers package-lint))
 
 ;; initialize package.el
 (setq package-user-dir
