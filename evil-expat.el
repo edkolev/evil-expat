@@ -272,7 +272,7 @@ BANG forces removal of files with modifications"
 (eval-after-load 'evil '(progn (evil-ex-define-cmd "gdiff" 'evil-expat-gdiff) (autoload 'evil-expat-gdiff "evil-expat" nil t)))
 
 (declare-function vdiff-magit-compare "ext:vdiff-magit")
-(declare-function vdiff-magit-show-unstaged "ext:vdiff-magit")
+(declare-function vdiff-magit-stage "ext:vdiff-magit")
 
 (evil-define-command evil-expat-gdiff (&optional revision)
   "Diff the current file with the current file in REVISION.
