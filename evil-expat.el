@@ -159,7 +159,7 @@ If NEW-NAME is a directory, the file is moved there."
       (user-error "File %s exists, use :rename! to overwrite it" new-name))
 
     (condition-case err
-        (rename-file filename new-name bang)
+        (dired-rename-file filename new-name bang)
       (error
        (if (and (string-match-p "File already exists" (error-message-string err)) (not bang))
            (user-error "File %s exists, use :rename! to overwrite it" new-name)
