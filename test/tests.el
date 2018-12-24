@@ -3,6 +3,8 @@
 (require 'evil-expat)
 (require 'evil-test-helpers)
 
+(require 'dired-aux) ;; needed for testing :rename in batch mode (which uses dired-rename-file)
+
 (ert-deftest evil-expat-test ()
   (ert-info (":rev")
     (evil-test-buffer
