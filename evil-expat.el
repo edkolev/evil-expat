@@ -53,6 +53,7 @@
 ;;; Code:
 
 (require 'evil)
+(require 'dired)
 
 ;;; utils
 
