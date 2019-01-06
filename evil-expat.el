@@ -166,6 +166,39 @@ If NEW-NAME is a directory, the file is moved there."
            (user-error "File %s exists, use :rename! to overwrite it" new-name)
          (user-error (error-message-string err)))))))
 
+;;; :grename
+
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "grename" 'evil-expat-grename) (autoload 'evil-expat-grename "evil-expat" nil t)))
+
+(declare-function magit-file-rename "ext:magit")
+(declare-function magit-file-tracked-p "ext:magit")
+(declare-function magit-convert-filename-for-git "ext:magit")
+
+(evil-define-command evil-expat-grename (new-name)
+  "`git mv' the current file to NEW-NAME.
+
+If NEW-NAME is a directory, the file is moved there."
+  (interactive "<f>")
+
+  (unless (require 'magit nil 'noerror)
+    (user-error "Package magit isn't installed"))
+
+  (let* ((name (buffer-name))
+         (filename (buffer-file-name))
+         (new-name (if (file-directory-p new-name)
+                       (concat (file-name-as-directory new-name) (file-name-nondirectory filename))
+                     new-name)))
+    (unless filename
+      (user-error "Buffer %s is not visiting a file" name))
+    (when (string-equal (expand-file-name filename) (expand-file-name new-name))
+      (user-error "%s and %s are the same file" buffer-file-name new-name))
+    (when (and (file-exists-p new-name))
+      (user-error "File %s already exists" new-name))
+    (unless (magit-file-tracked-p (magit-convert-filename-for-git name))
+      (user-error "File is not tracked by git"))
+
+    (magit-file-rename filename new-name)))
+
 ;;; :gblame
 
 ;;;###autoload
