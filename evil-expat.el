@@ -164,9 +164,7 @@ If NEW-NAME is a directory, the file is moved there."
       (error
        (if (and (string-match-p "File already exists" (error-message-string err)) (not bang))
            (user-error "File %s exists, use :rename! to overwrite it" new-name)
-         (user-error (error-message-string err)))))
-    (set-visited-file-name new-name t)
-    (set-buffer-modified-p nil)))
+         (user-error (error-message-string err)))))))
 
 ;;; :gblame
 
