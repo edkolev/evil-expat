@@ -325,6 +325,17 @@ If REVISION is null, show unstaged changes."
       (vdiff-magit-stage filename))
     ))
 
+;;; :Explore
+
+(evil-ex-define-cmd "Ex[plore]" 'dired-jump)
+(evil-ex-define-cmd "Sexplore" 'evil-expat-sexplore)
+
+(evil-define-command evil-expat-sexplore ()
+  "Split & Explore current file's directory"
+  (interactive)
+  (evil-split-buffer (current-buffer))
+  (dired-jump-other-window))
+
 (provide 'evil-expat)
 
 ;;; evil-expat.el ends here
