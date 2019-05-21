@@ -287,7 +287,7 @@ BANG forces removal of files with modifications"
   "The ex :colorscheme command"
   (interactive "<expat-theme>")
   (if (not theme)
-      (message "%s" (string-join (mapcar 'symbol-name (or custom-enabled-themes '(default))) ", "))
+      (message "%s" (mapconcat 'identity (mapcar 'symbol-name (or custom-enabled-themes '(default))) ", "))
     (unless (or (string-equal theme "default") (memq theme (custom-available-themes)))
       (user-error "Cannot find theme `%s'" theme))
     (mapc #'disable-theme custom-enabled-themes)
