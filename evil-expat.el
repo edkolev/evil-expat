@@ -300,7 +300,7 @@ BANG forces removal of files with modifications"
   (progn
     (unless (require 'magit nil 'noerror)
       (user-error "Package magit isn't installed"))
-    (magit-list-local-branch-names)))
+    (magit-list-branch-names)))
 
 ;;;###autoload
 (eval-after-load 'evil '(progn (evil-ex-define-cmd "gdiff" 'evil-expat-gdiff) (autoload 'evil-expat-gdiff "evil-expat" nil t)))
