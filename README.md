@@ -13,6 +13,7 @@ Add extra evil ex commands, including:
 - `:gblame` git-blame current file, requires `magit`
 - `:gremove` git remove current file, requires `magit`
 - `:grename` git move current file, requires `magit`
+- `:gread BRANCH` git checkout the file from BRANCH or master if not given, requires `magit`
 - `:tyank` copy range into tmux paste buffer, requires running under `tmux`
 - `:tput` paste from tmux paste buffer, requires running under `tmux`
 

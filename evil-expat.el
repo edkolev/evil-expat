@@ -325,6 +325,22 @@ If REVISION is null, show unstaged changes."
       (vdiff-magit-stage filename))
     ))
 
+;;; :gread
+
+;;;###autoload
+(eval-after-load 'evil '(progn (evil-ex-define-cmd "gread" 'evil-expat-gread) (autoload 'evil-expat-gread "evil-expat" nil t)))
+
+(declare-function magit-file-checkout "ext:magit")
+(declare-function magit-file-relative-name "ext:magit")
+
+(evil-define-command evil-expat-gread (&optional revision)
+  "Empty the file and replace it with REVISION.
+
+If REVISION is null, use `master'"
+  (interactive "<expat-git-branch>")
+  (let ((rev (if revision (symbol-name revision) "HEAD")))
+    (magit-file-checkout rev (magit-file-relative-name))))
+
 (provide 'evil-expat)
 
 ;;; evil-expat.el ends here
