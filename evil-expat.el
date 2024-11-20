@@ -250,19 +250,18 @@ BANG forces removal of files with modifications"
 (eval-after-load 'evil '(progn (evil-ex-define-cmd "tput" 'evil-expat-tput) (autoload 'evil-expat-tput "evil-expat" nil t)))
 
 ;; define :tyank and :tput only when running under tmux
-(when (and (getenv "TMUX") (executable-find "tmux"))
-  (evil-define-command evil-expat-tyank (begin end _type)
-    "Save range in tmux paste buffer"
-    (interactive "<R>")
-    (shell-command (concat "tmux set-buffer " (shell-quote-argument (buffer-substring begin end)))))
+(evil-define-command evil-expat-tyank (begin end _type)
+  "Save range in tmux paste buffer"
+  (interactive "<R>")
+  (shell-command (concat "tmux set-buffer " (shell-quote-argument (buffer-substring begin end)))))
 
-  (defun evil-expat-tput ()
-    "Paste from tmux paste buffer."
-    (interactive)
-    (save-excursion
-      (end-of-line)
-      (newline)
-      (insert (shell-command-to-string "tmux show-buffer")))))
+(defun evil-expat-tput ()
+  "Paste from tmux paste buffer."
+  (interactive)
+  (save-excursion
+    (end-of-line)
+    (newline)
+    (insert (shell-command-to-string "tmux show-buffer"))))
 
 ;;; diff-orig
 
