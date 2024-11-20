@@ -1,6 +1,6 @@
 ;;; evil-expat.el --- Evil ex commands -*- coding: utf-8 -*-
 
-;; Copyright (C) 2017 edkolev
+;; Copyright (C) 2024 edkolev
 
 ;; Author: edkolev <evgenysw@gmail.com>
 ;; URL: http://github.com/edkolev/evil-expat
@@ -257,7 +257,7 @@ BANG forces removal of files with modifications"
     (shell-command (concat "tmux set-buffer " (shell-quote-argument (buffer-substring begin end)))))
 
   (defun evil-expat-tput ()
-    "Paster from tmux paste buffer."
+    "Paste from tmux paste buffer."
     (interactive)
     (save-excursion
       (end-of-line)
@@ -295,6 +295,8 @@ BANG forces removal of files with modifications"
       (load-theme theme t))))
 
 ;;; :gdiff
+
+(declare-function magit-list-branch-names "ext:magit")
 
 (evil-expat--define-ex-argument "<expat-git-branch>" expat-git-branch
   (progn
